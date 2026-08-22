@@ -52,6 +52,12 @@ class _AuthSreenState extends State<AuthScreen>{
                     decoration: InputDecoration(
                     labelText: 'Password',),
                     obscureText: true,
+                    validator: (value){
+                      if(value==null || value.trim().length < 6){
+                      return 'password must be 6 characters long';
+                    }
+                    return null;
+                    },
                   ),
                   SizedBox(height: 12,),
                   ElevatedButton(onPressed: (){},
