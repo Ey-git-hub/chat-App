@@ -41,6 +41,12 @@ class _AuthSreenState extends State<AuthScreen>{
                     keyboardType: TextInputType.emailAddress,
                     autocorrect: false,
                     textCapitalization: TextCapitalization.none,
+                    validator: (value){
+                    if(value==null || value.trim().isEmpty || value.contains('@')){
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(
