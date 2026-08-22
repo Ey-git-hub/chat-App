@@ -6,7 +6,18 @@ const AuthScreen({super.key});
 State<AuthScreen> createState()=> _AuthSreenState();
 }
 class _AuthSreenState extends State<AuthScreen>{
+  final _form=GlobalKey<FormState>();
   var _isLogin=true;
+  var _enteredEmail='';
+  var _enteredPassword='';
+  void _submit(){
+
+    final isValid=_form.currentState!.validate();
+
+    if(isValid){
+    _form.currentState!.save();
+    }
+  }
 @override
   Widget build(BuildContext context) {
     
@@ -47,6 +58,9 @@ class _AuthSreenState extends State<AuthScreen>{
                     }
                     return null;
                     },
+                    onSaved: (value){
+                    _enteredEmail=value!;
+                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(
@@ -58,9 +72,12 @@ class _AuthSreenState extends State<AuthScreen>{
                     }
                     return null;
                     },
+                    onSaved: (value){
+                      _enteredPassword=value!;
+                    },
                   ),
                   SizedBox(height: 12,),
-                  ElevatedButton(onPressed: (){},
+                  ElevatedButton(onPressed:_submit,
                   style:ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                   ),child: Text(_isLogin ?'Login':'SignUp' )),
