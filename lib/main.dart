@@ -1,3 +1,4 @@
+import 'package:chat/screens/authscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255,63,17,177)),
         useMaterial3: true,
       ),
-      home: ...,
+      home: AuthScreen(),
     );
   }
 }
