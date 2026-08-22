@@ -16,8 +16,8 @@ class _AuthSreenState extends State<AuthScreen>{
 
     if(isValid){
     _form.currentState!.save();
-    print(_enteredEmail);
-    print(_enteredPassword);
+     print('Email: $_enteredEmail');
+  print('Password: $_enteredPassword');
     }
   }
 @override
@@ -45,6 +45,7 @@ class _AuthSreenState extends State<AuthScreen>{
             child: SingleChildScrollView(
               child: Padding(padding: EdgeInsets.all(16),
               child: Form(
+                key: _form,
                child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -55,7 +56,7 @@ class _AuthSreenState extends State<AuthScreen>{
                     autocorrect: false,
                     textCapitalization: TextCapitalization.none,
                     validator: (value){
-                    if(value==null || value.trim().isEmpty || value.contains('@')){
+                    if(value==null || value.trim().isEmpty || !value.contains('@')){
                       return 'Please enter a valid email address';
                     }
                     return null;
