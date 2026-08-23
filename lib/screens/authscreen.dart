@@ -14,9 +14,9 @@ class _AuthSreenState extends State<AuthScreen>{
 
     final isValid=_form.currentState!.validate();
 
-    if(isValid){
+  if(isValid){
     _form.currentState!.save();
-     print('Email: $_enteredEmail');
+  print('Email: $_enteredEmail');
   print('Password: $_enteredPassword');
     }
   }
