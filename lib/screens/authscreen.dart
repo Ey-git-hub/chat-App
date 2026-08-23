@@ -1,24 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+final _firebase=FirebaseAuth.instance;
 class AuthScreen extends StatefulWidget{
 const AuthScreen({super.key});
 @override
-State<AuthScreen> createState()=> _AuthSreenState();
+State<AuthScreen> createState()=> _AuthScreenState();
 }
-class _AuthSreenState extends State<AuthScreen>{
+class _AuthScreenState extends State<AuthScreen>{
   final _form=GlobalKey<FormState>();
   var _isLogin=true;
   var _enteredEmail='';
   var _enteredPassword='';
-  void _submit(){
+  void _submit() async{
 
     final isValid=_form.currentState!.validate();
 
-  if(isValid){
+  if(!isValid){
+    return;
+  }
     _form.currentState!.save();
   print('Email: $_enteredEmail');
   print('Password: $_enteredPassword');
-    }
+
+
+    if(_isLogin){
+      //
+    }else{
+      try{
+      final userCredential=await _firebase.createUserWithEmailAndPassword(email: _enteredEmail, password: _enteredPassword);
+      }
+     on FirebaseAuthException catch(error){
+     ScaffoldMessenger.of(context).clearSnackBars();
+     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.message ?? 'Authentication Failed.')));
+
+    }}
   }
 @override
   Widget build(BuildContext context) {
@@ -89,7 +105,7 @@ class _AuthSreenState extends State<AuthScreen>{
                     setState(() {
                       _isLogin=!_isLogin;
                     });
-                  }, child: Text(_isLogin ? 'Create and account': "I already have an account"))
+                  }, child: Text(_isLogin ? 'Create an account': "I already have an account"))
                 ],
                ),
               ),
