@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat/widget/user_image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -35,6 +36,9 @@ try{
     }else{
       
       final userCredential=await _firebase.createUserWithEmailAndPassword(email: _enteredEmail, password: _enteredPassword);
+      final storageRef=FirebaseStorage.instance.ref().child('user image').child('${userCredential.user!.uid}.jpg');
+      await storageRef.putFile(_selectedImage!);
+      final imageUrl= await storageRef.getDownloadURL();
       }}
      on FirebaseAuthException catch(error){
      ScaffoldMessenger.of(context).clearSnackBars();
