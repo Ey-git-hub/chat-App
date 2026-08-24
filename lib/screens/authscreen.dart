@@ -23,18 +23,20 @@ class _AuthScreenState extends State<AuthScreen>{
   print('Email: $_enteredEmail');
   print('Password: $_enteredPassword');
 
-
+try{
     if(_isLogin){
+      final userCredential=await _firebase.signInWithEmailAndPassword(email: _enteredEmail, password: _enteredPassword);
+
       //
     }else{
-      try{
+      
       final userCredential=await _firebase.createUserWithEmailAndPassword(email: _enteredEmail, password: _enteredPassword);
-      }
+      }}
      on FirebaseAuthException catch(error){
      ScaffoldMessenger.of(context).clearSnackBars();
      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.message ?? 'Authentication Failed.')));
 
-    }}
+    }
   }
 @override
   Widget build(BuildContext context) {
