@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:chat/widget/user_image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +20,7 @@ class _AuthScreenState extends State<AuthScreen>{
   var _enteredPassword='';
   File? _selectedImage;
   var _isAuthenticated=false;
-  
+
   void _submit() async{
 
     final isValid=_form.currentState!.validate();
@@ -41,9 +43,17 @@ try{
     }else{
       
       final userCredential=await _firebase.createUserWithEmailAndPassword(email: _enteredEmail, password: _enteredPassword);
-      final storageRef=FirebaseStorage.instance.ref().child('user image').child('${userCredential.user!.uid}.jpg');
-      await storageRef.putFile(_selectedImage!);
-      final imageUrl= await storageRef.getDownloadURL();
+       final imageBytes = await _selectedImage!.readAsBytes();
+        final base64Image = base64Encode(imageBytes);
+
+        // 2. Save the string inside a Cloud Firestore document securely for free
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+              'email': _enteredEmail,
+              'image_data': base64Image, // Your profile image stored as text!
+            });
       }}
      on FirebaseAuthException catch(error){
      ScaffoldMessenger.of(context).clearSnackBars();
@@ -124,7 +134,7 @@ try{
                   ),child: Text(_isLogin ?'Login':'SignUp' )),
                   SizedBox(height: 12,),
                   if(!_isAuthenticated)
-                  TextButton(onPressed: (){
+                    TextButton(onPressed: (){
                     setState(() {
                       _isLogin=!_isLogin;
                     });
