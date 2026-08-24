@@ -20,7 +20,7 @@ class _AuthScreenState extends State<AuthScreen>{
 
     final isValid=_form.currentState!.validate();
 
-  if(!isValid){
+  if(!isValid || !_isLogin && _selectedImage==null){
     return;
   }
     _form.currentState!.save();
