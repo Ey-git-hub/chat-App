@@ -17,6 +17,8 @@ class _AuthScreenState extends State<AuthScreen>{
   var _enteredEmail='';
   var _enteredPassword='';
   File? _selectedImage;
+  var _isAuthenticated=false;
+  
   void _submit() async{
 
     final isValid=_form.currentState!.validate();
@@ -29,6 +31,9 @@ class _AuthScreenState extends State<AuthScreen>{
   print('Password: $_enteredPassword');
 
 try{
+  setState(() {
+    _isAuthenticated=true;
+  });
     if(_isLogin){
       final userCredential=await _firebase.signInWithEmailAndPassword(email: _enteredEmail, password: _enteredPassword);
 
@@ -43,7 +48,9 @@ try{
      on FirebaseAuthException catch(error){
      ScaffoldMessenger.of(context).clearSnackBars();
      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.message ?? 'Authentication Failed.')));
-
+    setState(() {
+      _isAuthenticated=false;
+    });
     }
   }
 @override
@@ -108,11 +115,15 @@ try{
                     },
                   ),
                   SizedBox(height: 12,),
+                  if(_isAuthenticated)
+                    CircularProgressIndicator(),
+                  if(!_isAuthenticated)
                   ElevatedButton(onPressed:_submit,
                   style:ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                   ),child: Text(_isLogin ?'Login':'SignUp' )),
                   SizedBox(height: 12,),
+                  if(!_isAuthenticated)
                   TextButton(onPressed: (){
                     setState(() {
                       _isLogin=!_isLogin;
