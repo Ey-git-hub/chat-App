@@ -18,6 +18,7 @@ class _AuthScreenState extends State<AuthScreen>{
   var _isLogin=true;
   var _enteredEmail='';
   var _enteredPassword='';
+  var _enterUsername='';
   File? _selectedImage;
   var _isAuthenticated=false;
 
@@ -51,6 +52,7 @@ try{
             .collection('users')
             .doc(userCredential.user!.uid)
             .set({
+              'username':_enterUsername,
               'email': _enteredEmail,
               'image_data': base64Image, // Your profile image stored as text!
             });
@@ -94,7 +96,7 @@ try{
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if(!_isLogin) UserImage(onPickedImage:(pickedImage){ _selectedImage=pickedImage;},),
-                  TextFormField(
+                   TextFormField(
                     decoration: InputDecoration(
                     labelText: 'Email address',),
                     keyboardType: TextInputType.emailAddress,
@@ -108,6 +110,20 @@ try{
                     },
                     onSaved: (value){
                     _enteredEmail=value!;
+                    },
+                  ),
+                 if(!_isLogin)
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'Username'),
+                    enableSuggestions: false,
+                    validator: (value) {
+                      if (value ==null || value.isEmpty || value.length < 4){
+                        return "please enter at least 4 characters";
+                      }
+                      return null;
+                    },
+                    onSaved: (value){
+                        _enterUsername=value!;
                     },
                   ),
                   TextFormField(
