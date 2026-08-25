@@ -36,7 +36,7 @@ FirebaseFirestore.instance.collection('chat').add({
   'createdAt':Timestamp.now(),
   'userid':user.uid,
   'username':userData.data()!['username'],
-  'userImage':userData.data()!['image_data'],
+  'userImage':userData.data()!['userImage'],
 });
 
   }
