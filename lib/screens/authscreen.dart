@@ -60,7 +60,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .set({
               'username': _enterUsername,
               'email': _enteredEmail,
-              'image_data': base64Image, // Your profile image stored as text!
+              'userImage': base64Image, // Your profile image stored as text!
             });
       }
     } on FirebaseAuthException catch (error) {
