@@ -30,12 +30,11 @@ class ChatMessages extends StatelessWidget{
       reverse: true,
       itemCount: loadedmessages.length,itemBuilder:
       (ctx,index)
-      // =>Text(loadedmessages[index].data()['text'])
       {
         final ChatMessage=loadedmessages[index].data();
-        final nextchatmessage=index +1 <loadedmessages.length? loadedmessages[index].data():null ;
-        final currentMessageUserId=ChatMessage['userId'];
-        final nextMessageUserId=nextchatmessage!=null?nextchatmessage['userId']:null;
+        final nextchatmessage=index +1 < loadedmessages.length? loadedmessages[index+1].data():null ;
+        final currentMessageUserId=ChatMessage['userid'];
+        final nextMessageUserId=nextchatmessage!=null?nextchatmessage['userid']:null;
 
         final nextUserisSame=nextMessageUserId==currentMessageUserId;
 
